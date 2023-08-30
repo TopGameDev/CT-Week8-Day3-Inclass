@@ -1,0 +1,9 @@
+_pycache_/
+
+.vscode
+
+node_modules
+
+test.py
+
+whiteboard.py
