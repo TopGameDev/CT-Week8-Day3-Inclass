@@ -84,13 +84,15 @@ recommended: true
 When enabled, the compiler will check all code paths in a function to ensure they return a value.
 */
 
-// function getAge(age:number){
-//     if (age>10){
-//         return age
-//     }
-//     //return undefined is implicit here
-// }    
+function getAge(age:number){
+    if (age>10){
+        return age
+    }
+    //return undefined is implicit here
+    return undefined
+}    
 
+console.log(getAge(3))
 /*
 noUnusedLocals
 Default: false
@@ -99,6 +101,7 @@ When enabled, the compiler will report unused local variables.
 */
 // function doSomething(){
 //     let unused;
+//     return unused
 // }
 
 /*
@@ -108,6 +111,13 @@ Recommended:true
 When enabled, the compiler will report unused parameters.
 */
 
+// function onlyUseSecondParam(param1:string, param2:number):number{
+//     return param2**2
+// }
+
+let colors: string[] = ['red', 'blue', 'green', 'orange', 'pink', 'purple', 'yellow'];
+
+
 // function unUsedParam(param1:Event, param2:string){
 //     console.log(param2)
 // }
@@ -116,6 +126,10 @@ Sometime you want to ignore the parameter without turning off this compiler opti
 the _ represents a placeholder for an unused parameter, this is a convention that is built
 in to TypeScript
 */
+
+let everyOtherColor: string[] = colors.filter((_, index) => index % 2 === 0)
+console.log(everyOtherColor);
+
 // function unUsedParam2(_:Event, param2:string){
 //     console.log(param2)
 // }
@@ -131,25 +145,32 @@ unless you explicitly declare them as nullable.
 So, you’ll get an error if you set a variable to null or undefined. 
 */
 
-// function makeLowerCase(s:string){
-//     return s.toLowerCase()
-// }
+function findValue(arr:number[], val:number){
+    for (let num of arr){
+        if (num === val){
+            return num
+        }
+    }
+    return null
+}
 
-// makeLowerCase(null)
-
+let index = findValue([1,2,3,4,5], 5);
+if (index){
+    console.log(index+10)
+}
 /*
 allowUnreachableCode
 Default: true
-Recommended: true
+Recommended: false
 When set the false, reports error about unreachable code. 
 */
 
-// function sipylus(fruits:string[]){
+// function abcFruits(fruits:string[]){
 //     for(let fruit of fruits){
 //         fruit=fruit.toLowerCase()
 //         break
-//         return fruit
 //     }
+//     return fruits
 // }
 
 /*
@@ -161,11 +182,13 @@ When enabled, then compiler will warn us
 if we try to override a method without using the override keyword. 
 */
 
-// class Parent{
-//     action(){
-//         console.log("Parent action")
-//     }
-// }
+class Parent{
+    action(){
+        console.log("Parent action")
+    }
+}
+
+// Will get error with code below
 
 // class Child extends Parent{
 //     action(){
@@ -174,11 +197,17 @@ if we try to override a method without using the override keyword.
 // }
 
 
-// class Child2 extends Parent{
-//     override action(){
-//         console.log("Child Action")
-//     }
-// }
+// Needs override when set to true
+class Child extends Parent{
+    override action(){
+            console.log("Child Action")
+        }
+    }
+    
+    
+let child1 = new Child();
+
+child1.action()
 
 
 /* 
@@ -188,9 +217,9 @@ Recommended: Depends
 When enabled this will allow us to import JavaScript code in our TypeScript
 */
 
-// import {squareFootage} from './area';
-// let myArea=squareFootage(4.,5)
-// console.log(myArea)
+import {squareFootage} from './area';
+let myArea=squareFootage(4.,5)
+console.log(myArea)
 
 /*
 checkJs
@@ -198,8 +227,8 @@ Default: false
 Recommended: Depends
 When enabled TS will try to type check our JS code
 */
-// import {squareFootage} from './area';
-// let myArea2=squareFootage()
+// import {squareFootageJD} from './area-js-doc';
+// let myArea2=squareFootageJD(2,3)
 // console.log(myArea2) //NaN
 
 /*
@@ -218,9 +247,9 @@ To TS our JS parameters are of any type, so this passes the type check
 */
 
 
-// import {squareFootageJD} from './area-js-doc';
-// // squareFootageJD();
-// squareFootageJD(2,3);
+import {squareFootageJD} from './area-js-doc';
+// squareFootageJD(true, true); //error
+console.log(squareFootageJD(2,3));
 
 
 /*
@@ -256,7 +285,7 @@ This package generates universally unique identifiers
 // npm install @types/uuid
 // Now the error has gone away
 
-// import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
-// let uuid= uuidv4()
-// console.log(uuid)
+let uuid= uuidv4()
+console.log(uuid)
